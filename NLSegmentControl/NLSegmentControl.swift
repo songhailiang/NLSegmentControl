@@ -122,9 +122,10 @@ public class NLSegmentControl: UIView {
     /// Inset top and bottom of vertical divider. Default is 15.0
     public var verticalDividerInset: CGFloat = 15.0
     
-    // MARK: - Private Properties
+    /// current selected index
+    public fileprivate(set) var selectedSegmentIndex: Int = 0
     
-    fileprivate var selectedSegmentIndex: Int = 0
+    // MARK: - Private Properties
     
     //Contraints
     fileprivate var indicatorLeadingConstraint: NSLayoutConstraint?
