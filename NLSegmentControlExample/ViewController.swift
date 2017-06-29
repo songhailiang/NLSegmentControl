@@ -48,6 +48,10 @@ class ViewController: UIViewController {
         self.view.addSubview(segment)
         segment.reloadSegments()
         
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+3) {
+            segment.setSelectedSegmentIndex(5, animated: false)
+        }
+        
         sbSegment.titles = ["First", "Second", "Third"]
         sbSegment.segmentWidthStyle = .fixed
         sbSegment.selectionIndicatorColor = .yellow

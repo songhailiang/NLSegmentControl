@@ -375,19 +375,7 @@ extension NLSegmentControl {
     }
     
     fileprivate func scrollToSelectedSegmentIndex(animated: Bool) {
-        var offsetX: CGFloat = 0
-        for i in 0..<selectedSegmentIndex {
-            offsetX += widthOfSegmentAt(index: i)
-        }
-        let selectedSegmentWidth = widthOfSegmentAt(index: selectedSegmentIndex)
-        let selectedSegmentRect = CGRect(x: offsetX, y: 0, width: selectedSegmentWidth, height: bounds.height)
-        let selectedSegmentOffset = bounds.width / 2 - selectedSegmentWidth / 2
-        
-        var rectToScroll = selectedSegmentRect
-        rectToScroll.origin.x -= selectedSegmentOffset
-        rectToScroll.size.width += selectedSegmentOffset * 2
-        
-        segmentCollection.scrollRectToVisible(rectToScroll, animated: animated)
+        segmentCollection.selectItem(at: IndexPath(item: selectedSegmentIndex, section: 0), animated: animated, scrollPosition: .centeredHorizontally)
     }
     
     fileprivate func set(titleAttributes attributes: [String: AnyObject], forControlState state: UIControlState) {
