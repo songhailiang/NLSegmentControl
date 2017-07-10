@@ -84,13 +84,14 @@ class ViewController: UIViewController {
         imageSegment.reloadSegments()
         
         //image + text segment
-        let item11 = NLSegmentItem(title: "Baby", image: UIImage(named: "baby"), selectedImage: UIImage(named: "baby_s"))
-        let item12 = NLSegmentItem(title: "Bag", image: UIImage(named: "bag"), selectedImage: UIImage(named: "bag_s"))
-        let item13 = NLSegmentItem(title: "Diamond", image: UIImage(named: "diamond"), selectedImage: UIImage(named: "diamond_s"))
-        let item14 = NLSegmentItem(title: "Flower", image: UIImage(named: "flower"), selectedImage: UIImage(named: "flower_s"))
-        let item15 = NLSegmentItem(title: "Message", image: UIImage(named: "message"), selectedImage: UIImage(named: "message_s"))
+        let item11 = Category(title: "Baby", image: "baby", selectedImage: "baby_s")
+        let item12 = Category(title: "Bag", image: "bag", selectedImage: "bag_s")
+        let item13 = Category(title: "Diamond", image: "diamond", selectedImage: "diamond_s")
+        let item14 = Category(title: "Flower", image: "flower", selectedImage: "flower_s")
+        let item15 = Category(title: "Message", image: "message", selectedImage: "message_s")
         
         let imageTextSegment = NLSegmentControl(segments: [item11, item12, item13, item14, item15])
+        
         self.view.addSubview(imageTextSegment)
         imageTextSegment.selectionIndicatorColor = UIColor(red: 52/255.0, green: 181/255.0, blue: 229/255.0, alpha: 1.0)
         imageTextSegment.segmentWidthStyle = .dynamic

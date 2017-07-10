@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		F1353E111F13668D0099E2B9 /* NLSegmentControlData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1353E101F13668D0099E2B9 /* NLSegmentControlData.swift */; };
+		F1353E131F1369AF0099E2B9 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1353E121F1369AF0099E2B9 /* Category.swift */; };
 		F175E4251ED97FB20021F1A4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175E4241ED97FB20021F1A4 /* AppDelegate.swift */; };
 		F175E4271ED97FB20021F1A4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175E4261ED97FB20021F1A4 /* ViewController.swift */; };
 		F175E42A1ED97FB20021F1A4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F175E4281ED97FB20021F1A4 /* Main.storyboard */; };
@@ -46,6 +47,7 @@
 
 /* Begin PBXFileReference section */
 		F1353E101F13668D0099E2B9 /* NLSegmentControlData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NLSegmentControlData.swift; sourceTree = "<group>"; };
+		F1353E121F1369AF0099E2B9 /* Category.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		F175E4211ED97FB20021F1A4 /* NLSegmentControlExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NLSegmentControlExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F175E4241ED97FB20021F1A4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F175E4261ED97FB20021F1A4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 				F175E42B1ED97FB20021F1A4 /* Assets.xcassets */,
 				F175E42D1ED97FB20021F1A4 /* LaunchScreen.storyboard */,
 				F175E4301ED97FB20021F1A4 /* Info.plist */,
+				F1353E121F1369AF0099E2B9 /* Category.swift */,
 			);
 			path = NLSegmentControlExample;
 			sourceTree = "<group>";
@@ -240,6 +243,7 @@
 			files = (
 				F175E4271ED97FB20021F1A4 /* ViewController.swift in Sources */,
 				F175E4251ED97FB20021F1A4 /* AppDelegate.swift in Sources */,
+				F1353E131F1369AF0099E2B9 /* Category.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
