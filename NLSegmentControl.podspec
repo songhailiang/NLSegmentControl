@@ -9,10 +9,10 @@
 Pod::Spec.new do |s|
 
   s.name         = "NLSegmentControl"
-  s.version      = "1.1.0"
+  s.version      = "1.2.0"
   s.summary      = "A drop-in replacement for UISegmentControl."
   s.description  = <<-DESC
-                A drop-in replacement for UISegmentControl. Written in swift 3.0. It's heavily inspired by HMSegmentedControl"
+                A drop-in replacement for UISegmentControl. Written in swift 3.0. Support both text, images and text + image."
                     DESC
   s.homepage     = "https://github.com/songhailiang/NLSegmentControl"
   s.license      = "MIT"
