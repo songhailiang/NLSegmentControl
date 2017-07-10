@@ -18,7 +18,7 @@ class ViewController: UIViewController {
         
         //default segment
         let defaultSegment = NLSegmentControl()
-        defaultSegment.titles = ["Trending", "News", "Library"]
+        defaultSegment.segments = ["Trending", "News", "Library"]
         self.view.addSubview(defaultSegment)
         //auto layout
         defaultSegment.nl_equalTop(toView: self.view, offset: 30)
@@ -28,7 +28,7 @@ class ViewController: UIViewController {
         defaultSegment.reloadSegments()
         
         let segment = NLSegmentControl(frame: CGRect(x: 0, y: 80, width: UIScreen.main.bounds.width, height: 40))
-        segment.titles = ["One Day", "Two", "Three", "Four dogs", "Five fingers", "Six trees", "Seven", "Eight", "Nine", "Ten"]
+        segment.segments = ["One Day", "Two", "Three", "Four dogs", "Five fingers", "Six trees", "Seven", "Eight", "Nine", "Ten"]
         segment.segmentWidthStyle = .dynamic
         segment.segmentEdgeInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
         segment.selectionIndicatorHeight = 4.0
@@ -52,7 +52,7 @@ class ViewController: UIViewController {
             segment.setSelectedSegmentIndex(5, animated: false)
         }
         
-        sbSegment.titles = ["First", "Second", "Third"]
+        sbSegment.segments = ["First", "Second", "Third"]
         sbSegment.segmentWidthStyle = .fixed
         sbSegment.selectionIndicatorColor = .yellow
         sbSegment.selectionIndicatorPosition = .top
@@ -64,9 +64,13 @@ class ViewController: UIViewController {
         sbSegment.reloadSegments()
         
         //image segment
-        let imageSegment = NLSegmentControl()
-        imageSegment.images = [UIImage(named: "baby"), UIImage(named: "bag"), UIImage(named: "diamond"), UIImage(named: "flower"), UIImage(named: "message")]
-        imageSegment.selectedImages = [UIImage(named: "baby_s"), UIImage(named: "bag_s"), UIImage(named: "diamond_s"), UIImage(named: "flower_s"), UIImage(named: "message_s")]
+        let item1 = NLSegmentItem(image: UIImage(named: "baby"), selectedImage: UIImage(named: "baby_s"))
+        let item2 = NLSegmentItem(image: UIImage(named: "bag"), selectedImage: UIImage(named: "bag_s"))
+        let item3 = NLSegmentItem(image: UIImage(named: "diamond"), selectedImage:UIImage(named: "diamond_s"))
+        let item4 = NLSegmentItem(image: UIImage(named: "flower"), selectedImage:UIImage(named: "flower_s"))
+        let item5 = NLSegmentItem(image: UIImage(named: "message"), selectedImage:UIImage(named: "message_s"))
+        let imageSegment = NLSegmentControl(segments: [item1, item2, item3, item4, item5])
+        
         self.view.addSubview(imageSegment)
         //        imageSegment.backgroundColor = UIColor.lightGray
         imageSegment.selectionIndicatorColor = UIColor(red: 52/255.0, green: 181/255.0, blue: 229/255.0, alpha: 1.0)
@@ -80,10 +84,13 @@ class ViewController: UIViewController {
         imageSegment.reloadSegments()
         
         //image + text segment
-        let imageTextSegment = NLSegmentControl()
-        imageTextSegment.titles = ["Baby", "Bag", "Diamond", "Flower", "Message"]
-        imageTextSegment.images = [UIImage(named: "baby"), UIImage(named: "bag"), UIImage(named: "diamond"), UIImage(named: "flower"), UIImage(named: "message")]
-        imageTextSegment.selectedImages = [UIImage(named: "baby_s"), UIImage(named: "bag_s"), UIImage(named: "diamond_s"), UIImage(named: "flower_s"), UIImage(named: "message_s")]
+        let item11 = NLSegmentItem(title: "Baby", image: UIImage(named: "baby"), selectedImage: UIImage(named: "baby_s"))
+        let item12 = NLSegmentItem(title: "Bag", image: UIImage(named: "bag"), selectedImage: UIImage(named: "bag_s"))
+        let item13 = NLSegmentItem(title: "Diamond", image: UIImage(named: "diamond"), selectedImage: UIImage(named: "diamond_s"))
+        let item14 = NLSegmentItem(title: "Flower", image: UIImage(named: "flower"), selectedImage: UIImage(named: "flower_s"))
+        let item15 = NLSegmentItem(title: "Message", image: UIImage(named: "message"), selectedImage: UIImage(named: "message_s"))
+        
+        let imageTextSegment = NLSegmentControl(segments: [item11, item12, item13, item14, item15])
         self.view.addSubview(imageTextSegment)
         imageTextSegment.selectionIndicatorColor = UIColor(red: 52/255.0, green: 181/255.0, blue: 229/255.0, alpha: 1.0)
         imageTextSegment.segmentWidthStyle = .dynamic

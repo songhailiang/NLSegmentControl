@@ -37,12 +37,8 @@ public class NLSegmentControl: UIView {
     
 // MARK: - Public Properties
     
-    public var titles: [String]?
-    public var images: [UIImage?]?
-    public var selectedImages: [UIImage?]?
+    public var segments: [NLSegment]
     public var indexChangedHandler: ((_ index: Int) -> (Void))?
-    public var imagePosition: SegmentImagePosition = .left
-    public var imageTitleSpace: CGFloat = 8.0
     
     /// Style of the segment's width, default is .fixed
     public var segmentWidthStyle: SegmentWidthStyle = .fixed
@@ -121,9 +117,18 @@ public class NLSegmentControl: UIView {
     public var verticalDividerWidth: CGFloat = 1.0
     /// Inset top and bottom of vertical divider. Default is 15.0
     public var verticalDividerInset: CGFloat = 15.0
+    /// image position relative to text, default is .left
+    public var imagePosition: SegmentImagePosition = .left
+    /// space between image and title, default is 8.0
+    public var imageTitleSpace: CGFloat = 8.0
     
     /// current selected index
     public fileprivate(set) var selectedSegmentIndex: Int = 0
+    
+    /// current selected segment
+    public var selectedSegment: NLSegment? {
+        return segments.item(at: selectedSegmentIndex)
+    }
     
     // MARK: - Private Properties
     
@@ -172,6 +177,25 @@ public class NLSegmentControl: UIView {
     }()
     
     // MARK: - Life Circle
+    public init() {
+        self.segments = []
+        super.init(frame: .zero)
+    }
+    
+    public override init(frame: CGRect) {
+        self.segments = []
+        super.init(frame: frame)
+    }
+    
+    public init(segments: [NLSegment]) {
+        self.segments = segments
+        super.init(frame: .zero)
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        self.segments = []
+        super.init(coder: aDecoder)
+    }
     
     public override func willMove(toSuperview newSuperview: UIView?) {
         addSubview(selectionBox)
@@ -260,9 +284,7 @@ public extension NLSegmentControl {
 extension NLSegmentControl {
 
     fileprivate var itemsCount: Int {
-        let textCount = titles?.count ?? 0
-        let imgCount = images?.count ?? 0
-        return max(textCount, imgCount)
+        return segments.count
     }
     
     //calculate all segments width
@@ -314,11 +336,11 @@ extension NLSegmentControl {
         }
         var textWidth: CGFloat = 0
         var imageWidth: CGFloat = 0
-        if let text = titles?.item(at: index) {
+        if let text = segments.item(at: index)?.segmentTitle {
             textWidth = ceil((text as NSString).size(attributes: titleTextAttributes).width)
         }
-        if let image = images?.item(at: index) {
-            imageWidth = image?.size.width ?? 0
+        if let image = segments.item(at: index)?.segmentImage {
+            imageWidth = image.size.width
         }
         
         //both text and image
@@ -400,7 +422,7 @@ extension NLSegmentControl: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! NLSegmentCell
         
         //text
-        if let title = titles?.item(at: indexPath.item) {
+        if let title = segments.item(at: indexPath.item)?.segmentTitle {
             cell.displayButton.setTitle(title, for: .normal)
             
             let attrTitle = NSAttributedString(string: title, attributes: titleTextAttributes)
@@ -411,14 +433,14 @@ extension NLSegmentControl: UICollectionViewDataSource {
         }
         
         //image
-        if let image = images?.item(at: indexPath.item) {
+        if let image = segments.item(at: indexPath.item)?.segmentImage {
             cell.displayButton.setImage(image, for: .normal)
             
             cell.displayButton.nl_setImagePosition(position: imagePosition, spacing: imageTitleSpace)
         }
         
         //selected image
-        if let image = selectedImages?.item(at: indexPath.item) {
+        if let image = segments.item(at: indexPath.item)?.segmentSelectedImage {
             cell.displayButton.setImage(image, for: .selected)
         }
         
