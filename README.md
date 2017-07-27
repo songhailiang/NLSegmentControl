@@ -51,6 +51,7 @@ segment.segments = [item1, item2, item3]
 - **text and image**: 
 
 1.use NLSegmentItem struct
+
 Note: ```title```, ```image```, ```selectedImage``` are all optional
 ```objc
 let item1 = NLUISegmentItem(title: "Baby", image: UIImage(named: "baby"), selectedImage: UIImage(named: "baby_s"))
