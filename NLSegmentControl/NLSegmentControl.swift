@@ -94,21 +94,13 @@ public class NLSegmentControl: UIView {
     public var titleTextAttributes: [String: AnyObject] = [
         NSFontAttributeName: UIFont.systemFont(ofSize: 14),
         NSForegroundColorAttributeName: UIColor.black
-        ] {
-        didSet {
-//            set(titleAttributes: titleTextAttributes, forControlState: .normal)
-        }
-    }
+        ]
     
     /// Text attributes to apply to labels of the selected segments
     public var selectedTitleTextAttributes: [String:AnyObject] = [
         NSFontAttributeName: UIFont.systemFont(ofSize: 14),
         NSForegroundColorAttributeName: UIColor.black
-        ] {
-        didSet {
-//            set(titleAttributes: selectedTitleTextAttributes, forControlState: .selected)
-        }
-    }
+        ]
     
     /// Vertical divider between the segments. Default is false
     public var enableVerticalDivider: Bool = false
@@ -402,15 +394,6 @@ extension NLSegmentControl {
     
     fileprivate func scrollToSelectedSegmentIndex(animated: Bool) {
         segmentCollection.selectItem(at: IndexPath(item: selectedSegmentIndex, section: 0), animated: animated, scrollPosition: .centeredHorizontally)
-    }
-    
-    fileprivate func set(titleAttributes attributes: [String: AnyObject], forControlState state: UIControlState) {
-        for cell in segmentCollection.visibleCells {
-            if let textCell = cell as? NLSegmentCell,let title = textCell.displayButton.title(for: state) {
-                let attributedTitle = NSAttributedString(string: title, attributes: attributes)
-                textCell.displayButton.setAttributedTitle(attributedTitle, for: state)
-            }
-        }
     }
     
     fileprivate func attributedTitleAtIndex(_ index: Int, selected: Bool) -> NSAttributedString? {
