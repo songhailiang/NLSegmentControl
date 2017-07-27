@@ -109,6 +109,42 @@ class ViewController: UIViewController {
         imageTextSegment.nl_equalRight(toView: self.view, offset: 0)
         imageTextSegment.nl_heightIs(60)
         imageTextSegment.reloadSegments()
+        
+        let item21 = Category(title: "Monday", desc: "working")
+        let item22 = Category(title: "Tuesday", desc: "working")
+        let item23 = Category(title: "Wednesday", desc: "working")
+        let item24 = Category(title: "Thursday", desc: "working")
+        let item25 = Category(title: "Friday", desc: "working")
+        let item26 = Category(title: "Saturday", desc: "happy")
+        let item27 = Category(title: "Sunday", desc: "happy!")
+        let attrSegment = NLSegmentControl(segments: [item21, item22, item23, item24, item25, item26, item27])
+        attrSegment.segmentWidthStyle = .dynamic
+        attrSegment.segmentEdgeInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+        attrSegment.segmentTitleFormatter = {
+            (segment, selected) -> NSAttributedString? in
+            if let cate = segment as? Category {
+                let title = cate.categoryTitle ?? ""
+                let desc = cate.categoryDesc != nil ? "\n" + cate.categoryDesc! : ""
+                let titleRange = NSRange(location: 0, length: title.count)
+                let descRange = NSRange(location: title.count, length: desc.count)
+                let attr = NSMutableAttributedString(string: title + desc)
+                attr.addAttribute(NSFontAttributeName, value: UIFont.systemFont(ofSize: 18), range: titleRange)
+                attr.addAttribute(NSFontAttributeName, value: UIFont.systemFont(ofSize: 10), range: descRange)
+                if selected {
+                    attr.addAttribute(NSForegroundColorAttributeName, value: UIColor.red, range: descRange)
+                } else {
+                    attr.addAttribute(NSForegroundColorAttributeName, value: UIColor.blue, range: descRange)
+                }
+                return attr
+            }
+            return nil
+        }
+        self.view.addSubview(attrSegment)
+        attrSegment.nl_marginTop(toView: imageTextSegment, margin: 20)
+        attrSegment.nl_equalLeft(toView: self.view, offset: 0)
+        attrSegment.nl_equalRight(toView: self.view, offset: 0)
+        attrSegment.nl_heightIs(60)
+        attrSegment.reloadSegments()
     }
     
     override func didReceiveMemoryWarning() {

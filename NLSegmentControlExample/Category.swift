@@ -11,11 +11,13 @@ import NLSegmentControl
 
 struct Category {
     var categoryTitle: String?
+    var categoryDesc: String?
     var categoryImage: String?
     var categorySelectedImage: String?
     
-    init(title: String? = nil, image: String? = nil, selectedImage: String? = nil) {
+    init(title: String? = nil, desc: String? = nil, image: String? = nil, selectedImage: String? = nil) {
         self.categoryTitle = title
+        self.categoryDesc = desc
         self.categoryImage = image
         self.categorySelectedImage = selectedImage
     }

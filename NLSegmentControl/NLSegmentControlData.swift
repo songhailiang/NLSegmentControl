@@ -13,6 +13,7 @@ public protocol NLSegment {
     var segmentTitle: String? { get }
     var segmentImage: UIImage? { get }
     var segmentSelectedImage: UIImage? { get }
+    
 }
 
 /// default implements of NLSegment

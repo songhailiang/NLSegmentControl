@@ -39,6 +39,7 @@ public class NLSegmentControl: UIView {
     
     public var segments: [NLSegment]
     public var indexChangedHandler: ((_ index: Int) -> (Void))?
+    public var segmentTitleFormatter: ((_ item: NLSegment, _ selected: Bool) -> NSAttributedString?)?
     
     /// Style of the segment's width, default is .fixed
     public var segmentWidthStyle: SegmentWidthStyle = .fixed
@@ -95,7 +96,7 @@ public class NLSegmentControl: UIView {
         NSForegroundColorAttributeName: UIColor.black
         ] {
         didSet {
-            set(titleAttributes: titleTextAttributes, forControlState: .normal)
+//            set(titleAttributes: titleTextAttributes, forControlState: .normal)
         }
     }
     
@@ -105,7 +106,7 @@ public class NLSegmentControl: UIView {
         NSForegroundColorAttributeName: UIColor.black
         ] {
         didSet {
-            set(titleAttributes: selectedTitleTextAttributes, forControlState: .selected)
+//            set(titleAttributes: selectedTitleTextAttributes, forControlState: .selected)
         }
     }
     
@@ -336,8 +337,11 @@ extension NLSegmentControl {
         }
         var textWidth: CGFloat = 0
         var imageWidth: CGFloat = 0
-        if let text = segments.item(at: index)?.segmentTitle {
-            textWidth = ceil((text as NSString).size(attributes: titleTextAttributes).width)
+//        if let text = segments.item(at: index)?.segmentTitle {
+//            textWidth = ceil((text as NSString).size(attributes: titleTextAttributes).width)
+//        }
+        if let text = attributedTitleAtIndex(index, selected: false) {
+            textWidth = ceil(text.size().width)
         }
         if let image = segments.item(at: index)?.segmentImage {
             imageWidth = image.size.width
@@ -408,6 +412,19 @@ extension NLSegmentControl {
             }
         }
     }
+    
+    fileprivate func attributedTitleAtIndex(_ index: Int, selected: Bool) -> NSAttributedString? {
+        guard let segment = segments.item(at: index),
+            let title = segment.segmentTitle else { return nil }
+        if let attrTitle = segmentTitleFormatter?(segment, selected) {
+            return attrTitle
+        }
+        if selected {
+            return NSAttributedString(string: title, attributes: selectedTitleTextAttributes)
+        } else {
+            return NSAttributedString(string: title, attributes: titleTextAttributes)
+        }
+    }
 }
 
 // MARK: - UICollectionViewDataSource
@@ -425,11 +442,13 @@ extension NLSegmentControl: UICollectionViewDataSource {
         if let title = segments.item(at: indexPath.item)?.segmentTitle {
             cell.displayButton.setTitle(title, for: .normal)
             
-            let attrTitle = NSAttributedString(string: title, attributes: titleTextAttributes)
-            cell.displayButton.setAttributedTitle(attrTitle, for: .normal)
+            if let attrTitle = attributedTitleAtIndex(indexPath.item, selected: false) {
+                cell.displayButton.setAttributedTitle(attrTitle, for: .normal)
+            }
             
-            let selectedAttrTitle = NSAttributedString(string: title, attributes: selectedTitleTextAttributes)
-            cell.displayButton.setAttributedTitle(selectedAttrTitle, for: .selected)
+            if let selectedAttrTitle = attributedTitleAtIndex(indexPath.item, selected: true) {
+                cell.displayButton.setAttributedTitle(selectedAttrTitle, for: .selected)
+            }
         }
         
         //image
@@ -489,6 +508,8 @@ fileprivate class NLSegmentCell: UICollectionViewCell {
     
     var displayButton: UIButton = {
         let button = UIButton()
+        button.titleLabel?.numberOfLines = 0
+        button.titleLabel?.textAlignment = .center
         button.isUserInteractionEnabled = false
         return button
     }()
