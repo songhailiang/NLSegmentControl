@@ -153,3 +153,15 @@ attrSegment.segmentTitleFormatter = {
   * ```imagePosition```: image position relative to text
   * ```imageTitleSpace```: space between image and title
 
+# Change Log
+
+## version 1.3.0
+- support attributed title
+
+## version 1.2.0
+- refactor segment data source, use ```NLSegment``` protocol as data source
+- remove ```titles```, ```images```, ```selectedImages``` properties
+- support custom data model
+
+## version 1.1.0
+- update ```selectedSegmentIndex``` property to public
