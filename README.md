@@ -6,6 +6,7 @@ A drop-in replacement for UISegmentControl.  Written in swift 3.0. It's heavily 
 # Features
 
 - Support both text, images and text + image (easy to set image position: left, right, top, bottom)
+- Support attributed title
 - Based on protocol, support custom data model as the data source
 - Support horizontal scrolling
 - Support advanced title styling with text attributes for font, color, kerning, shadow, etc.
@@ -95,6 +96,32 @@ let item1 = Category(title: "Baby", image: "baby", selectedImage: "baby_s")
 let item2 = Category(title: "Bag", image: "bag", selectedImage: "bag_s")
 let item3 = Category(title: "Diamond", image: "diamond", selectedImage: "diamond_s")
 segment.segments = [item1, item2, item3]
+```
+
+- **attributed title**: 
+
+Set the ```segmentTitleFormatter``` property, you can set any attribute to the segment as you want.
+If return nil, the segment will use the common ```titleTextAttributes``` property.
+```
+attrSegment.segmentTitleFormatter = {
+            (segment, selected) -> NSAttributedString? in
+            if let cate = segment as? Category {
+                let title = cate.categoryTitle ?? ""
+                let desc = cate.categoryDesc != nil ? "\n" + cate.categoryDesc! : ""
+                let titleRange = NSRange(location: 0, length: title.count)
+                let descRange = NSRange(location: title.count, length: desc.count)
+                let attr = NSMutableAttributedString(string: title + desc)
+                attr.addAttribute(NSFontAttributeName, value: UIFont.systemFont(ofSize: 18), range: titleRange)
+                attr.addAttribute(NSFontAttributeName, value: UIFont.systemFont(ofSize: 10), range: descRange)
+                if selected {
+                    attr.addAttribute(NSForegroundColorAttributeName, value: UIColor.red, range: descRange)
+                } else {
+                    attr.addAttribute(NSForegroundColorAttributeName, value: UIColor.blue, range: descRange)
+                }
+                return attr
+            }
+            return nil
+        }
 ```
 
 # Custom properties
