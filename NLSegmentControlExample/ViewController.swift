@@ -125,8 +125,8 @@ class ViewController: UIViewController {
             if let cate = segment as? Category {
                 let title = cate.categoryTitle ?? ""
                 let desc = cate.categoryDesc != nil ? "\n" + cate.categoryDesc! : ""
-                let titleRange = NSRange(location: 0, length: title.count)
-                let descRange = NSRange(location: title.count, length: desc.count)
+                let titleRange = NSRange(location: 0, length: title.characters.count)
+                let descRange = NSRange(location: title.characters.count, length: desc.characters.count)
                 let attr = NSMutableAttributedString(string: title + desc)
                 attr.addAttribute(NSFontAttributeName, value: UIFont.systemFont(ofSize: 18), range: titleRange)
                 attr.addAttribute(NSFontAttributeName, value: UIFont.systemFont(ofSize: 10), range: descRange)
