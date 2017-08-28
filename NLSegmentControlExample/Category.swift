@@ -23,7 +23,7 @@ struct Category {
     }
 }
 
-extension Category: NLSegment {
+extension Category: NLSegmentDataSource {
     var segmentTitle: String? {
         return categoryTitle
     }

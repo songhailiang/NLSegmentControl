@@ -9,7 +9,7 @@
 import UIKit
 
 /// datasource protocol of segment control.
-public protocol NLSegment {
+public protocol NLSegmentDataSource {
     var segmentTitle: String? { get }
     var segmentImage: UIImage? { get }
     var segmentSelectedImage: UIImage? { get }
@@ -17,7 +17,7 @@ public protocol NLSegment {
 }
 
 /// default implements of NLSegment
-public extension NLSegment {
+public extension NLSegmentDataSource {
     var segmentTitle: String? {
         return nil
     }
@@ -30,7 +30,7 @@ public extension NLSegment {
 }
 
 // e.g. segmentControl.segments = [String]
-extension String: NLSegment {
+extension String: NLSegmentDataSource {
     public var segmentIdentifier: String {
         return self
     }
@@ -40,7 +40,7 @@ extension String: NLSegment {
 }
 
 // e.g. segmentControl.segments = [UIImage]
-extension UIImage: NLSegment {
+extension UIImage: NLSegmentDataSource {
     public var segmentImage: UIImage? {
         return self
     }
@@ -59,7 +59,7 @@ public struct NLSegmentItem {
     }
 }
 
-extension NLSegmentItem: NLSegment {
+extension NLSegmentItem: NLSegmentDataSource {
     public var segmentTitle: String? {
         return title
     }

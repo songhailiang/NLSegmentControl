@@ -37,9 +37,10 @@ public class NLSegmentControl: UIView {
     
 // MARK: - Public Properties
     
-    public var segments: [NLSegment]
+    public var segments: [NLSegmentDataSource]
     public var indexChangedHandler: ((_ index: Int) -> (Void))?
-    public var segmentTitleFormatter: ((_ item: NLSegment, _ selected: Bool) -> NSAttributedString?)?
+    public var segmentTitleFormatter: ((_ item: NLSegmentDataSource, _ selected: Bool) -> NSAttributedString?)?
+    public var configSegmentCell: ((_ cell: NLSegmentCell) -> Void)?
     
     /// Style of the segment's width, default is .fixed
     public var segmentWidthStyle: SegmentWidthStyle = .fixed
@@ -119,13 +120,14 @@ public class NLSegmentControl: UIView {
     public fileprivate(set) var selectedSegmentIndex: Int = 0
     
     /// current selected segment
-    public var selectedSegment: NLSegment? {
+    public var selectedSegment: NLSegmentDataSource? {
         return segments.item(at: selectedSegmentIndex)
     }
     
     // MARK: - Private Properties
     
     //Contraints
+    fileprivate var indicatorHeightConstraint: NSLayoutConstraint?
     fileprivate var indicatorLeadingConstraint: NSLayoutConstraint?
     fileprivate var indicatorWidthConstraint: NSLayoutConstraint?
     fileprivate var indicatorPositionConstraint: NSLayoutConstraint?
@@ -180,7 +182,7 @@ public class NLSegmentControl: UIView {
         super.init(frame: frame)
     }
     
-    public init(segments: [NLSegment]) {
+    public init(segments: [NLSegmentDataSource]) {
         self.segments = segments
         super.init(frame: .zero)
     }
@@ -215,7 +217,7 @@ public class NLSegmentControl: UIView {
         
         //selection indicator
         if selectionIndicatorPosition != .none {
-            selectionIndicator.nl_heightIs(selectionIndicatorHeight)
+            indicatorHeightConstraint = selectionIndicator.nl_heightIs(selectionIndicatorHeight)
             indicatorLeadingConstraint = selectionIndicator.nl_equalLeft(toView: self)
             indicatorWidthConstraint = selectionIndicator.nl_widthIs(0)
             switch selectionIndicatorPosition {
@@ -265,8 +267,7 @@ public extension NLSegmentControl {
         calcSegmentWidth()
         segmentCollection.reloadData()
         if selectedSegmentIndex < itemsCount {
-            segmentCollection.selectItem(at: IndexPath(item: selectedSegmentIndex, section: 0)
-                , animated: false, scrollPosition: .left)
+            scrollToSelectedSegmentIndex(animated: false)
         }
         
         updateSelectionIndicator()
@@ -329,11 +330,12 @@ extension NLSegmentControl {
         }
         var textWidth: CGFloat = 0
         var imageWidth: CGFloat = 0
-//        if let text = segments.item(at: index)?.segmentTitle {
-//            textWidth = ceil((text as NSString).size(attributes: titleTextAttributes).width)
-//        }
+        //calc width of selected and normal, use the wider one
         if let text = attributedTitleAtIndex(index, selected: false) {
             textWidth = ceil(text.size().width)
+        }
+        if let text = attributedTitleAtIndex(index, selected: true) {
+            textWidth = max(textWidth, ceil(text.size().width))
         }
         if let image = segments.item(at: index)?.segmentImage {
             imageWidth = image.size.width
@@ -380,6 +382,7 @@ extension NLSegmentControl {
         }
         
         indicatorLeadingConstraint?.constant = offsetX - segmentCollection.contentOffset.x
+        indicatorHeightConstraint?.constant = selectionIndicatorHeight
         boxLeadingConstraint?.constant = offsetX - segmentCollection.contentOffset.x
         
         switch selectionIndicatorPosition {
@@ -446,6 +449,7 @@ extension NLSegmentControl: UICollectionViewDataSource {
             cell.displayButton.setImage(image, for: .selected)
         }
         
+        cell.segmentData = segments.item(at: indexPath.item)
         cell.contentEdgeInset = segmentEdgeInset
         
         //vertical divider
@@ -453,6 +457,8 @@ extension NLSegmentControl: UICollectionViewDataSource {
         cell.verticalDividerColor = verticalDividerColor
         cell.verticalDividerWidth = verticalDividerWidth
         cell.verticalDividerInset = verticalDividerInset
+        
+        configSegmentCell?(cell)
         
         return cell
     }
@@ -487,9 +493,11 @@ extension NLSegmentControl: UICollectionViewDelegateFlowLayout {
 
 // MARK: - Segment Cell
 
-fileprivate class NLSegmentCell: UICollectionViewCell {
+public class NLSegmentCell: UICollectionViewCell {
     
-    var displayButton: UIButton = {
+    public fileprivate(set) var segmentData: NLSegmentDataSource?
+    
+    public var displayButton: UIButton = {
         let button = UIButton()
         button.titleLabel?.numberOfLines = 0
         button.titleLabel?.textAlignment = .center
@@ -497,12 +505,12 @@ fileprivate class NLSegmentCell: UICollectionViewCell {
         return button
     }()
     
-    var verticalDivider: UIView = {
+    fileprivate var verticalDivider: UIView = {
         let view = UIView()
         return view
     }()
     
-    var contentEdgeInset: UIEdgeInsets = .zero {
+    fileprivate var contentEdgeInset: UIEdgeInsets = .zero {
         didSet {
             displayButtonTopContraint?.constant = contentEdgeInset.top
             displayButtonLeftContraint?.constant = contentEdgeInset.left
@@ -511,20 +519,20 @@ fileprivate class NLSegmentCell: UICollectionViewCell {
         }
     }
     
-    var verticalDividerColor: UIColor? {
+    fileprivate var verticalDividerColor: UIColor? {
         didSet {
             verticalDivider.backgroundColor = verticalDividerColor
         }
     }
     
-    var verticalDividerWidth: CGFloat = 0 {
+    fileprivate var verticalDividerWidth: CGFloat = 0 {
         didSet {
             dividerWidthConstraint?.constant = verticalDividerWidth
             dividerTrailingConstraint?.constant = verticalDividerWidth/2
         }
     }
     
-    var verticalDividerInset: CGFloat = 0 {
+    fileprivate var verticalDividerInset: CGFloat = 0 {
         didSet {
             dividerTopConstraint?.constant = verticalDividerInset
             dividerBottomConstraint?.constant = -verticalDividerInset
@@ -557,7 +565,7 @@ fileprivate class NLSegmentCell: UICollectionViewCell {
         dividerBottomConstraint = verticalDivider.nl_equalBottom(toView: self.contentView)
     }
     
-    override var isSelected: Bool {
+    override public var isSelected: Bool {
         didSet {
             displayButton.isSelected = isSelected
         }
